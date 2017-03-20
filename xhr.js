@@ -29,6 +29,16 @@ xhr.onreadystatechange = function(){
     }
   }
 };
+
+//load 替代readystatechange事件
+xhr.onload = function(){
+  if((xhr.status>=200 && xhr.status<300) || xhr.status==304){
+    alert(xhr.responseText);
+  }else{
+    alert("Request was unsuccessful:" + xhr.status);
+  }
+}
+
 //xhr.open("get","example.txt",true);
 //xhr.setRequestHeader("MyHeader","MyValue");//设置自定义的请求头部信息：字段名称 字段值
 //xhr.send(null);//参数 无传null
@@ -52,6 +62,6 @@ xhr.send(null);
 
 xhr.open("post" , "postexample.php", true);
 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-var form = document.getElementById('user-info");
+var form = document.getElementById('user-info');
 xhr.send(serialize(form));                                  
 //xhr.send(new FormData(from));//不用设置请求头部                             
