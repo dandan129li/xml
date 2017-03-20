@@ -29,6 +29,29 @@ xhr.onreadystatechange = function(){
     }
   }
 };
-xhr.open("get","example.txt",true);
-xhr.send(null);//参数 无传null
+//xhr.open("get","example.txt",true);
+//xhr.setRequestHeader("MyHeader","MyValue");//设置自定义的请求头部信息：字段名称 字段值
+//xhr.send(null);//参数 无传null
 //xhr.abort(); //取消异步请求
+
+
+function addURLParam(url,name,value){
+  url += (url.indexOf("?") == -1 ? "?" : "&");
+  url += encodeURIComponent(name) + "=" + encodeURIComponent(value);
+  return url;
+}
+
+vat url="example.php";
+url = addURLParam(url, "name" , "Nicho");
+xhr.open("get", url , false);
+xhr.timeout = 1000;
+xhr.ontimeout = function(){
+  alert("Request did not return in a second.");
+}
+xhr.send(null);
+
+xhr.open("post" , "postexample.php", true);
+xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+var form = document.getElementById('user-info");
+xhr.send(serialize(form));                                  
+//xhr.send(new FormData(from));//不用设置请求头部                             
