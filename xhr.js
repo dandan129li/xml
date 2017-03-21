@@ -64,4 +64,24 @@ xhr.open("post" , "postexample.php", true);
 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 var form = document.getElementById('user-info');
 xhr.send(serialize(form));                                  
-//xhr.send(new FormData(from));//不用设置请求头部                             
+//xhr.send(new FormData(from));//不用设置请求头部 
+
+function createStreamingClient(url, progress, finished){
+  var xhr = new XMLHttpRequest(),
+      received = 0;
+  xhr.open("get", url, true);
+  xhr.onreadystatechange = function(){
+    var result;
+    if(xhr.readyState==3){
+      //只取得最新数据并调整计数器
+      result = xhr.responseText.substring(received);
+      received += result.length;
+      progress(result);//调用progress回调函数
+    }else if(xhr.readyState == 4){
+      finished(xhr.responseText);
+    }
+  };
+  xhr.send(null);
+  return xhr;
+}
+// var client = createStreamingClient("streaming.php", function(data){alert("Received:"+data;)}, function(data){alert("Done!");});
